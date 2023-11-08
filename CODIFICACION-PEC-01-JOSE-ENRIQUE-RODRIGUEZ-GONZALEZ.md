@@ -112,7 +112,7 @@ Preferiblemente entregad el documento en PDF y comprobad que todas las ecuacione
 
 **Introducción**
 
-Como se describe en la introducción del módulo 1, el envío o almacenamiento de información resulta eficiente en la medida de que somos capaces de compactar los datos de información. Esta capacidad de compresión tenemos que poder desarrollarla sobre los datos de cualquier fuente de información (voz, imágenes y datos) que se transmite de forma habitual a través de las redes de comunicaciones o se almacena para su posterior recuperación. Del mismo modo, como se plantea en los módulos 2 y 3, los datos habrá que protegerlos frente a los errores que inevitablemente se producen en todo proceso de transmisión o lectura/escritura (almacenamiento y recuperación de la información). En esta PEC trabajaremos todo este proceso. En la primera parte de la PAC trabajaremos la codificación de la se˜nal obtenida de una fuente. En la segunda parte de la PAC se analizará un esquema de codificación de bloque. La tercera parte de la PAC propondrá el estudio de esquemas FEC de corrección de errores basados en un código convolucional. Finalmente, la última parte de la PAC propondrá una práctica (de trabajo opcional) que se basará en la compresión de datos (imágenes) con pérdidas.
+Como se describe en la introducción del módulo 1, el envío o almacenamiento de información resulta eficiente en la medida de que somos capaces de compactar los datos de información. Esta capacidad de compresión tenemos que poder desarrollarla sobre los datos de cualquier fuente de información (voz, imágenes y datos) que se transmite de forma habitual a través de las redes de comunicaciones o se almacena para su posterior recuperación. Del mismo modo, como se plantea en los módulos 2 y 3, los datos habrá que protegerlos frente a los errores que inevitablemente se producen en todo proceso de transmisión o lectura/escritura (almacenamiento y recuperación de la información). En esta PEC trabajaremos todo este proceso. En la primera parte de la PAC trabajaremos la codificación de la señal obtenida de una fuente. En la segunda parte de la PAC se analizará un esquema de codificación de bloque. La tercera parte de la PAC propondrá el estudio de esquemas FEC de corrección de errores basados en un código convolucional. Finalmente, la última parte de la PAC propondrá una práctica (de trabajo opcional) que se basará en la compresión de datos (imágenes) con pérdidas.
 
 [Volver al Índice](#índice)
 
@@ -278,7 +278,7 @@ En algunos casos, un error en un codificador entrópico puede propagarse y causa
 
 ***Conclusión***
 
-Para la tarea de compresión sin pérdidas de datos de temperatura de una habitación, donde las fluctuaciones son limitadas, un codificador diferencial es particularmente apropiado. Aprovecha la naturaleza de las variaciones de temperatura, que suelen ser pequeñas en intervalos cortos, para proporcionar una compresión eficiente. Al contrastarlo con un codificador entrópico, el cual no ofrece ventajas significativas en un contexto de probabilidades uniformes y diferencias mínimas, se destaca la eficiencia de la codificación diferencial en términos de simplicidad, robustez y capacidad de compresión. Por lo tanto, para el caso específico de la monitorización de la temperatura ambiente en una habitación, la codificación diferencial no solo es más adecuada, sino que también asegura la integridad de los datos a través de una recuperación fiable en el proceso de decodificación.
+Para la tarea de compresión sin pérdidas de datos de temperatura de una habitación, donde las fluctuaciones son limitadas, un codificador diferencial es particularmente apropiado. Hay que aprovechar la naturaleza de las variaciones de temperatura, que suelen ser pequeñas en intervalos cortos, para proporcionar una compresión eficiente. Al contrastarlo con un codificador entrópico, el cual no ofrece ventajas significativas en un contexto de probabilidades uniformes y diferencias mínimas, se destaca la eficiencia de la codificación diferencial en términos de simplicidad, robustez y capacidad de compresión. Por lo tanto, para el caso específico de la monitorización de la temperatura ambiente en una habitación, la codificación diferencial no solo es más adecuada, sino que también asegura la integridad de los datos a través de una recuperación fiable en el proceso de decodificación.
 
 [Volver al Índice](#índice)
 
@@ -407,55 +407,196 @@ Tomando una muestra de cada sensor por minuto, la tasa total de bits sería la s
 
 ## Pregunta 1.3.2.
 
+Haciendo uso de la información de la figura 1 justificad por qué un codificador entrópico permitiría obtener un flujo de información inferior al obtenido en el apartado anterior.
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 1.3.2.
+
+Un codificador entrópico, como Huffman o aritmético, permite obtener un flujo de información inferior al codificar de manera independiente porque puede explotar las dependencias estadísticas y las probabilidades no uniformes entre los símbolos para asignar códigos más cortos a los eventos más probables y códigos más largos a los menos probables.
+
+La información proporcionada en la figura 1 establece una dependencia entre la temperatura y la humedad:
+
+-Una humedad muy baja (< 25%) solo se da si la temperatura es < 8ºC.
+
+- Una humedad baja (25-50%) se da si la temperatura está entre 6ºC y 18ºC.
+
+- Una humedad alta (50-75%) se da si la temperatura está entre 10ºC y 18ºC.
+
+- Una humedad muy alta (> 75%) solo se da si la temperatura es > 14ºC.
+
+Esta dependencia significa que no todas las combinaciones de temperatura y humedad son igualmente probables. Por ejemplo, no encontraremos una humedad muy alta si la temperatura es baja (<14ºC). Esta relación reduce el número de combinaciones posibles que necesitamos considerar al codificar la información.
+
+Al utilizar un codificador entrópico que tiene en cuenta estas dependencias, asignamos códigos más cortos a las combinaciones de temperatura y humedad que ocurren con más frecuencia y códigos más largos (o incluso ninguno) a las combinaciones que son imposibles o menos probables, reduciendo así la cantidad promedio de bits necesarios por muestra.
+
+Esto no es posible cuando se codifica la temperatura y la humedad de manera independiente, ya que se asume que todas las combinaciones son igualmente probables, y cada variable se codifica sin tener en cuenta la otra, lo que lleva a una tasa de bits mayor porque no se están utilizando las deficiencias de la distribución conjunta de ambas variables.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 1.3.3.
+
+Si, como en los apartados anteriores, se utilizan tres bits por sensar la temperatura, indicad cuál seria la entropía de la fuente haciendo uso de la información de la figura 1.
 
 
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 1.3.3.
+
+Para calcular la entropía de la fuente teniendo en cuenta la dependencia entre la temperatura y la humedad proporcionada por la información de la figura 1, primero debemos identificar todas las combinaciones posibles de temperatura y humedad y luego calcular la probabilidad de cada combinación. La entropía se calculará luego como la suma de las probabilidades de cada combinación multiplicada por el logaritmo (base 2) de su probabilidad inversa.
+
+Considerando las temperaturas posibles sensadas en incrementos de 4°C, desde 0°C hasta 28°C, y las restricciones de humedad, las combinaciones válidas y sus probabilidades serían:
+
+Temperatura < 8ºC: humedad < 25%.
+Temperatura entre 8ºC (incluido) y 14ºC: humedad puede ser entre 25% y 50%.
+Temperatura entre 14ºC (incluido) y 18ºC: humedad puede ser entre 25% y > 75%.
+Temperatura > 18ºC: humedad puede ser entre 50% y > 75%.
+Suponiendo que todas las temperaturas son equiprobables, tenemos 8 posibles temperaturas sensadas. La humedad también tiene restricciones basadas en la temperatura.
+
+Primero debemos calcular la probabilidad de cada evento (combinación de temperatura y humedad). Para hacer esto de manera precisa, necesitaríamos saber la distribución de probabilidad de la humedad dentro de los rangos de temperatura dados. Sin esa información y asumiendo equiprobabilidad dentro de los rangos dados, tendríamos que hacer suposiciones. Por ejemplo, podríamos suponer que dentro de un rango de temperatura, todas las humedades posibles son igualmente probables.
+
+Vamos a calcular la entropía bajo la suposición de que todas las temperaturas y humedades posibles son equiprobables dentro de los rangos dados por las restricciones. No podemos dar un número exacto sin más información, pero puedo mostrarte cómo se haría el cálculo:
+
+1. Asigna probabilidades a cada combinación de temperatura y humedad según las restricciones.
+2. Calcula la entropía $H$ usando la fórmula de la entropía:
+$$
+H(X) = -\sum{p(x) \log_2{p(x)}}
+$$
+donde $p(x)$ es la probabilidad de la combinación $x$.
+
+Podríamos establecer la entropía de la temperatura por separado (ya que la humedad depende de la temperatura pero no al revés), lo cual sería más simple. Con 8 temperaturas equiprobables y 3 bits por temperatura, la entropía máxima de la temperatura sería simplemente los 3 bits, ya que la fuente es máximamente aleatoria y cada estado es igualmente probable. Sin embargo, al considerar la información adicional sobre la humedad, la entropía conjunta probablemente sería menor porque hay menos incertidumbre cuando se consideran las restricciones.
+
+Para obtener la entropía exacta, tendríamos que hacer los cálculos con las probabilidades específicas de cada combinación de temperatura y humedad, que requeriría más información de la figura 1 o suposiciones adicionales.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 1.3.4.
+
+Diseñad el código de Huffman que permite comprimir la fuente (respecto el resultado obtenido en el apartado 1.3.1).
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 1.3.4.
+
+Para diseñar el código de Huffman para una fuente de información, debemos seguir una serie de pasos. Los pasos para construir un código de Huffman, dados los datos del apartado 1.3.1, son los siguientes:
+
+1. Determinar la probabilidad de cada símbolo que se va a codificar.
+
+2. Construir un árbol de Huffman, empezando por los símbolos menos probables y combinándolos en nodos que suman sus probabilidades hasta llegar a la raíz del árbol, que tiene una probabilidad total de 1.
+3. Asignar un 0 y un 1 a cada bifurcación del árbol, de manera que ningún código sea prefijo de otro.
+4. Leer los códigos desde la raíz hasta las hojas para obtener el código de Huffman para cada símbolo.
+
+Para la temperatura, tenemos 8 posibles temperaturas equiprobables, y para la humedad, tenemos 4 rangos de humedad equiprobables. Sin información adicional sobre la probabilidad exacta de cada símbolo de temperatura o humedad, asumiremos que son uniformes. Entonces, cada temperatura tiene una probabilidad de 1/8 y cada rango de humedad tiene una probabilidad de 1/4.
+
+Dado que se codifican de forma independiente, podríamos hacer dos árboles de Huffman separados: uno para la temperatura y otro para la humedad. Sin embargo, para el cálculo real, necesitaríamos la frecuencia o la probabilidad de cada símbolo de la fuente. Como no se ha proporcionado, usaré probabilidades equiprobables para ilustrar cómo se haría:
+
+**Árbol de Huffman para la temperatura** (con probabilidad 1/8 para cada uno de los 8 símbolos):
+
+1. Agrupamos los símbolos en pares hasta que solo quede un nodo.
+2. Asignamos códigos 0 y 1 alternativamente a cada agrupamiento.
+
+**Árbol de Huffman para la humedad**(con probabilidad 1/4 para cada uno de los 4 rangos):
+
+1. Similarmente, agrupamos los símbolos en pares.
+2. Asignamos códigos 0 y 1 alternativamente a cada agrupamiento.
+
+A continuación escribiremos la secuencia de probabilidades y a elaborar un código válido.
+
+**Temperatura:**
+
+Tenemos 8 temperaturas diferentes, cada una con una probabilidad de 1/8.
+
+**Paso 1: Listar las probabilidades:**
+
+- $T_1 = 0°C$, probabilidad: $P(T_1) = \frac{1}{8}$
+- $T_2 = 4°C$, probabilidad: $P(T_2) = \frac{1}{8}$
+- $T_3 = 8°C$, probabilidad: $P(T_3) = \frac{1}{8}$
+- $T_4 = 12°C$, probabilidad: $P(T_4) = \frac{1}{8}$
+- $T_5 = 16°C$, probabilidad: $P(T_5) = \frac{1}{8}$
+- $T_6 = 20°C$, probabilidad: $P(T_6) = \frac{1}{8}$
+- $T_7 = 24°C$, probabilidad: $P(T_7) = \frac{1}{8}$
+- $T_8 = 28°C$, probabilidad: $P(T_8) = \frac{1}{8}$
+
+**Paso 2: Construir el árbol de Huffman.**
+
+Dado que todas las temperaturas tienen la misma probabilidad, podemos asignar códigos binarios de manera uniforme. No hay una estructura de árbol única en este caso, ya que todas las combinaciones tendrán la misma longitud de código.
+
+***Humedad:***
+
+Tenemos 4 rangos de humedad, cada uno con una probabilidad de 1/4.
+
+**Paso 1: Listar las probabilidades:**
+
+- $H_1$: H < 25%, probabilidad: $P(H_1) = \frac{1}{4}$
+- $H_2$: 25% ≤ H < 50%, probabilidad: $P(H_2) = \frac{1}{4}$
+- $H_3$: 50% ≤ H < 75%, probabilidad: $P(H_3) = \frac{1}{4}$
+- $H_4$: H ≥ 75%, probabilidad: $P(H_4) = \frac{1}{4}$
+
+**Paso 2: Construir el árbol de Huffman.**
+
+Al igual que con la temperatura, debido a la igualdad de las probabilidades, cualquier asignación de códigos binarios de 2 bits será eficiente y no hay una estructura de árbol única para este caso.
+
+***CONCLUSION***
+
+En resumen, para nuestro caso particular donde la temperatura y la humedad tienen distribuciones de probabilidad uniformes, la utilización de un código de Huffman no ofrecería una eficiencia superior en comparación con una codificación binaria de longitud fija. Esto se debe a que el código de Huffman es más eficiente cuando existen diferencias significativas en las probabilidades de ocurrencia de los símbolos. Dado que cada símbolo en nuestro escenario tiene la misma probabilidad, cada uno se podría asignar de manera óptima a un código binario de longitud fija, siendo 3 bits para las temperaturas y 2 bits para los rangos de humedad. Por lo tanto, en ausencia de variabilidad en las probabilidades, un código de Huffman no reduce la longitud promedio del código y no aporta beneficios en términos de compresión de datos.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 1.3.5.
+
+Determinad el flujo de información medio obtenido haciendo uso de este codificador.
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 1.3.5.
+
+Recordemos que las tasas de bits calculadas anteriormente para la temperatura y la humedad, sin considerar el codificador de Huffman, eran de 0.05 bps y 0.0333... bps, respectivamente, debido a que se toma una muestra por minuto de cada sensor y que utilizamos 3 bits para codificar la temperatura y 2 bits para codificar la humedad.
+
+La tasa de bits total, que es la suma de las tasas de bits para la temperatura y la humedad, fue de 0.0833... bps.
+
+Así, el flujo de información medio usando un codificador de Huffman (que en este caso es igual a la codificación binaria de longitud fija) sería de 0.0833... bps.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 1.3.6.
+
+¿Cuál será el factor de compresión obtenido?
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 1.3.6.
+
+El factor de compresión se obtiene comparando el tamaño original de los datos con el tamaño después de la compresión. Sin embargo, como se ha mencionado antes, con una distribución uniforme de los símbolos y la asignación de códigos de Huffman (que en este caso serían de longitud fija igual al caso sin compresión debido a la igualdad de probabilidades), no habrá ninguna compresión real. Esto significa que el factor de compresión sería 1, lo que indica que no hay reducción en el tamaño.
+
+$
+\text{Factor de compresión} = \frac{\text{ Tamaño sin compresion}}{\text{Tamaño con compresion}}
+$
 
 
+En este caso, al no haber una compresión efectiva con el código de Huffman debido a la igualdad en la distribución de probabilidad de los símbolos, el tamaño de los datos con compresión es igual al tamaño sin compresión.
+
+$
+\text{Factor de compresión} = \frac{\text{ Tamaño sin compresion}}{\text{Tamaño con compresion (igual a sin compresión)}}=\frac{1}{1}=1
+$
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Por lo tanto, el factor de compresión es 1. Esto significa que no hay ningún beneficio en términos de compresión al utilizar el código de Huffman en este escenario específico.
 
 
