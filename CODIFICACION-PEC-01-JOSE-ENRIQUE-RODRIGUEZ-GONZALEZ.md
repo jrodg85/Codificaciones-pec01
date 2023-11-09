@@ -92,15 +92,42 @@ Preferiblemente entregad el documento en PDF y comprobad que todas las ecuacione
 - [Pregunta 1.2.4.](#pregunta-124)
 - [Respuesta a la pregunta 1.2.4.](#respuesta-a-la-pregunta-124)
 - [Ejercicio 1.3.](#ejercicio-13)
-- 
-- 
-- 
-- 
-- 
-- 
-- 
-- 
+- [Pregunta 1.3.1.](#pregunta-131)
+- [Respuesta a la pregunta 1.3.1.](#respuesta-a-la-pregunta-131)
+- [Pregunta 1.3.2.](#pregunta-132)
+- [Respuesta a la pregunta 1.3.2.](#respuesta-a-la-pregunta-132)
+- [Pregunta 1.3.3.](#pregunta-133)
+- [Respuesta a la pregunta 1.3.3.](#respuesta-a-la-pregunta-133)
+- [Pregunta 1.3.4.](#pregunta-134)
+- [Respuesta a la pregunta 1.3.4.](#respuesta-a-la-pregunta-134)
+- [Pregunta 1.3.5.](#pregunta-135)
+- [Respuesta a la pregunta 1.3.5.](#respuesta-a-la-pregunta-135)
+- [Pregunta 1.3.6.](#pregunta-136)
+- [Respuesta a la pregunta 1.3.6.](#respuesta-a-la-pregunta-136)
+- [Parte 2. Codificación de canal. Códigos de bloque](#parte-2-codificación-de-canal-códigos-de-bloque)
+- [Pregunta 2.1.](#pregunta-21)
+- [Respuesta a la pregunta 2.1.](#respuesta-a-la-pregunta-21)
+- [Pregunta 2.2.](#pregunta-22)
+- [Respuesta a la pregunta 2.2.](#respuesta-a-la-pregunta-22)
+- [Pregunta 2.3.](#pregunta-23)
+- [Respuesta a la pregunta 2.3.](#respuesta-a-la-pregunta-23)
+- [Información Adicional](#información-adicional)
+- [Pregunta 2.5.](#pregunta-25)
+- [Respuesta a la pregunta 2.5.](#respuesta-a-la-pregunta-25)
+- [Pregunta 2.6.](#pregunta-26)
+- [Respuesta a la pregunta 2.6.](#respuesta-a-la-pregunta-26)
+- [Pregunta 2.7.](#pregunta-27)
+- [Respuesta a la pregunta 2.7.](#respuesta-a-la-pregunta-27)
+- [Pregunta 2.8.](#pregunta-28)
+- [Respuesta a la pregunta 2.8.](#respuesta-a-la-pregunta-28)
+- [Pregunta 2.9.](#pregunta-29)
+- [Respuesta a la pregunta 2.9.](#respuesta-a-la-pregunta-29)
 
+
+
+
+
+-
 
 
 
@@ -586,17 +613,572 @@ Así, el flujo de información medio usando un codificador de Huffman (que en es
 El factor de compresión se obtiene comparando el tamaño original de los datos con el tamaño después de la compresión. Sin embargo, como se ha mencionado antes, con una distribución uniforme de los símbolos y la asignación de códigos de Huffman (que en este caso serían de longitud fija igual al caso sin compresión debido a la igualdad de probabilidades), no habrá ninguna compresión real. Esto significa que el factor de compresión sería 1, lo que indica que no hay reducción en el tamaño.
 
 $
-\text{Factor de compresión} = \frac{\text{ Tamaño sin compresion}}{\text{Tamaño con compresion}}
+\text{Factor de compresión} = \frac{\text{ Tamaño sin compresión}}{\text{Tamaño con compresión}}
 $
 
 
 En este caso, al no haber una compresión efectiva con el código de Huffman debido a la igualdad en la distribución de probabilidad de los símbolos, el tamaño de los datos con compresión es igual al tamaño sin compresión.
 
 $
-\text{Factor de compresión} = \frac{\text{ Tamaño sin compresion}}{\text{Tamaño con compresion (igual a sin compresión)}}=\frac{1}{1}=1
+\text{Factor de compresión} = \frac{\text{ Tamaño sin compresión}}{\text{Tamaño con compresión (igual a sin compresión)}}=\frac{1}{1}=1
 $
 
 
 Por lo tanto, el factor de compresión es 1. Esto significa que no hay ningún beneficio en términos de compresión al utilizar el código de Huffman en este escenario específico.
+
+[Volver al Índice](#índice)
+
+---
+
+## Parte 2. Codificación de canal. Códigos de bloque
+
+Con objeto de garantizar la integridad de los bytes transmitidos, en el curso se ha visto que estos se pueden proteger con un código de comprobación de redundancia cíclica (Cyclic Redundancy Check o CRC). Trabajaron en esta PEC dos posibles esquemas.
+
+El primer código CRC del estándar corresponde al del esquema que se muestra a la siguiente figura:
+
+![Esquema CRC](./images/003-parte-2.png)
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 2.1.
+
+¿Cuál es el polinomio generador asociado al esquema anterior?
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 2.1.
+
+El esquema mostrado en la figura representa un circuito de desplazamiento con retroalimentación, también conocido como registro de desplazamiento con retroalimentación lineal, que se utiliza para calcular el Cyclic Redundancy Check (CRC). Para determinar el polinomio generador a partir del esquema, debes seguir las conexiones que representan los términos del polinomio.
+
+En el diagrama, las posiciones donde hay conexiones que se retroalimentan al registro de desplazamiento (denotadas por círculos con una "+", como se muestra en la siguiente imagen a continuación del presente párrafo, que representan la operación XOR) indican los términos del polinomio. Los índices $r_0 , r_1 , ..., r_{15}$ representan los bits de registro, y los bits que se retroalimentan son aquellos donde las líneas se cruzan con una puerta XOR antes de ingresar de nuevo al registro de desplazamiento.
+
+![Puerta XOR](./images/004-puerta-XOR.png)
+
+> Puerta XOR
+
+Si las XOR están ubicadas entre:
+
+- La entrada de datos y $R_0$.
+- $r_3$ y $r_4$
+- $r_{10}$ y $r_{11}$
+
+Por otro lado, considerando que el sistema llega hasta $r_{15}$, el polinomio generador puede ser determinado de la siguiente manera:
+
+- El XOR entre el `input data` y $r_0$ indica que el bit más bajo indica que el bit más bajo $r_0$ (que correspondería al término $x^0$) está involucrado en la retroalimentación.
+
+- El XOR entre $r_3$ y $r_4$ indica que 
+
+- El XOR entre $r_3$ y $r_4$ indica que $r_3$ (correspondiente a $x^3$) está involucrado.
+
+- El XOR entre $r_{10}$ y $r_{11}$ indica que $r_{10}$ (correspondiente a $x^{10}$) está involucrado.
+
+- Además, debido a que el sistema llega hasta $r_{15}$, el término más alto en el polinomio es $x^{15}$, representando el bit más significativo.
+
+Entonces, el polinomio generador $G(x)$ basado en el esquema proporcionado y tus aclaraciones es:
+
+$G(x) = x^{15} + x^{10} + x^3 + 1$
+
+Esto se deduce de la estructura de la retroalimentación que has descrito. En el polinomio, no se incluyen los índices para los bits $r_i$ que no tienen una conexión XOR, lo que significa que esos términos no aparecen en el polinomio.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 2.2.
+
+¿Cuántos bytes de redundancia genera?
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 2.2.
+
+El polinomio generador que hemos determinado es:
+
+$G(x) = x^{15} + x^{10} + x^3 + 1$
+
+La potencia más alta en un polinomio generador de CRC indica el tamaño del CRC generado. En este caso, el término más alto es $x^{15}$, lo que significa que el CRC generado será de 16 bits de longitud (se empieza a contar desde 0).
+
+Dado que 8 bits conforman un byte, un CRC de 16 bits equivaldrá a 2 bytes. Por lo tanto, este esquema de CRC genera 2 bytes de redundancia.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 2.3.
+
+¿Podríamos decir cuál es la capacidad de detección que se consigue? En caso afirmativo indicadla.
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 2.3.
+
+La capacidad de detección de un código CRC depende del polinomio generador y su longitud. Un polinomio de CRC de n bits puede detectar:
+
+1. Todos los errores de un solo bit (cualquier bit único que cambie de 0 a 1 o de 1 a 0).
+
+2. Cualquier error de inversión de dos bits (dos bits que cambien de lugar entre sí).
+
+3. Cualquier error impar de bits (un número impar de bits cambian de estado).
+
+4. Cualquier error de ráfaga menor o igual a n bits (un error de ráfaga es una secuencia de bits adyacentes que cambian de estado, donde los bits que cambian están completamente contenidos en una secuencia de n bits).
+
+En el caso del polinomio generador:
+
+$G(x) = x^{15} + x^{10} + x^3 + 1$
+
+El CRC resultante es de 16 bits. Por lo tanto, podemos decir que este CRC puede detectar:
+
+- Todos los errores de un solo bit, ya que cualquier cambio en un solo bit resultará en un polinomio diferente al dividirse por el polinomio generador.
+
+- Todos los errores de dos bits, porque la distancia mínima de Hamming para un polinomio de 16 bits es 3, lo que significa que puede detectar y distinguir patrones de error de dos bits.
+
+- Cualquier error impar de bits, debido a la propiedad de detección de errores impares de los CRC basados en polinomios generadores con el término constante (el '+1' al final del polinomio asegura esto).
+
+- Cualquier error de ráfaga que tenga una longitud de 16 bits o menos. Dado que el CRC es de 16 bits, cualquier patrón de error que afecte hasta 16 bits contiguos será detectado.
+
+Además, la capacidad de detección disminuye a medida que la longitud de la ráfaga de error supera los 16 bits, pero incluso en esos casos, hay una alta probabilidad de detección, aunque no está garantizada al 100%. Es importante tener en cuenta que mientras más largo sea el CRC, mejor será su capacidad general de detección de errores, especialmente para errores de ráfaga más largos.
+
+
+[Volver al Índice](#índice)
+
+---
+
+## Información adicional.
+
+El segundo código CRC del estándar es un código de 16 bits asociado al polinomio generador $G = 202611 _{OCT}$ . A partir de la información que proporciona este polinomio se pide:
+
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 2.5.
+
+¿Cuál es la expresión del polinomio generador $g(p)$?
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 2.5.
+
+
+Para convertir el polinomio generador dado en notación octal $G = 202611 _{OCT}$ a su forma binaria y luego a su forma polinómica, seguimos estos pasos:
+
+
+1. Convertir cada dígito octal a su equivalente binario de 3 bits.
+2. Combinar los equivalentes binarios para formar el número completo en binario.
+3. Escribir el polinomio $g(p)$ correspondiente a la forma binaria, donde cada bit representa un coeficiente del polinomio, comenzando con el bit menos significativo.
+
+
+Convierte cada dígito octal a binario:
+
+- $2 _{OCT} = 010 _{BIN}$
+
+- $0 _{OCT} = 000 _{BIN}$
+
+- $6 _{OCT} = 110 _{BIN}$
+
+- $1 _{OCT} = 001 _{BIN}$
+
+
+
+Combínalos para obtener la secuencia binaria completa:
+
+- $202611 _{OCT}= 010000010110001001 _{BIN}$
+
+Invertimos las posiciones porque la secuencia binaria es empieza por el lado derecho, el bit menos significativo:
+
+- $1001101101000010 _{BIN}$
+
+Ahora, escribimos el polinomio $g(p)$ usando la secuencia binaria, donde cada '1' representa un término en el polinomio y el índice del término corresponde a la posición del bit, comenzando desde el lado derecho con el exponente 0:
+
+
+$g(p) = x^{15} + x^{13} + x^{12} + x^{11} + x^{8} + x^{7} + x^{1}$
+
+Este es el polinomio generador expresado en forma polinómica a partir del número octal dado.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 2.6.
+
+Dibujad el diagrama de bloques que permite codificar una secuencia de información.
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 2.6.
+
+![esquema CRC 2.6](./images/005-ejercicio-2-6.png)
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 2.7.
+
+Indicad cuál será el contenido del bloque de CRC si la trama de información es todo ceros excepto los últimos bits {0 0 0 . . . 0 0 1 1 1}, donde los puntos suspensivos indican que todos los bits intermedios son cero. Tened presente que la secuencia se empieza a codificar por la izquierda.
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 2.7.
+
+Para calcular el contenido del bloque de CRC para la trama de información dada, necesitamos seguir el proceso de división binaria que implementa el CRC, pero hay un atajo importante que podemos utilizar en este caso específico. Debido a que todos los bits de la trama de información son ceros hasta los últimos tres bits, la división por el polinomio generador solo afectará a esos últimos tres bits y los bits de CRC que les siguen directamente.
+
+En otras palabras, como los primeros bits de la trama son ceros, no cambian el contenido del registro de desplazamiento hasta que llegamos a los últimos tres bits, donde la trama de información tiene tres unos consecutivos. Este es el único momento en que la trama de información realmente interactúa con el polinomio generador para cambiar los valores en el registro de desplazamiento.
+
+Dado que la trama se empieza a codificar por la izquierda, estos últimos tres unos se procesarán al final, y el efecto de su procesamiento se reflejará en los bits más bajos del CRC. Por lo tanto, el contenido del bloque de CRC será simplemente el resultado de la división del polinomio asociado a los tres unos finales de la trama por el polinomio generador.
+
+El polinomio asociado con la secuencia de bits {0 0 0 ... 0 0 1 1 1} es:
+
+$x^2+x^1+x^0$
+
+$0000000000000111$
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 2.8.
+
+Con la información disponible, y sin hacer más cálculos, ¿podemos argumentar cuál de los dos códigos es preferible utilizar? En caso afirmativo indicad cuál es mejor y en caso de que no se pueda afirmar, argumentad la respuesta.
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 2.8.
+
+- El primer código CRC corresponde al esquema proporcionado anteriormente, que usa un polinomio generador de grado 15. No hemos discutido la detección de errores específica o la capacidad correctora de este polinomio.
+
+El segundo código CRC es un código de 16 bits asociado al polinomio generador $G=202611 _{OCT}$, que no ha sido completamente descrito en términos de su capacidad de detección o corrección de errores.
+
+Basándonos en lo general de los códigos CRC:
+
+**Longitud del código.**
+
+Cuanto más largo sea el código CRC, en general, mayor será su capacidad para detectar errores. Un código de 16 bits puede detectar cualquier error de un solo bit, cualquier error de dos bits (dependiendo del polinomio), y es muy probable que detecte errores con más bits afectados o errores de ráfagas (burst errors).
+
+**Polinomio generador.**
+
+El polinomio generador determina el tipo de errores que el CRC puede detectar. Un buen polinomio generador puede detectar errores comunes que ocurren en el canal de comunicación. Sin más información sobre el polinomio asociado con el primer código CRC, es difícil comparar directamente su efectividad con la del segundo código CRC.
+
+**Aplicación específica.**
+
+Dependiendo del contexto de uso, diferentes códigos CRC pueden ser preferibles. Por ejemplo, en aplicaciones donde el tamaño del mensaje es muy grande, un CRC más largo puede ser más beneficioso. En aplicaciones donde la velocidad de transmisión es crítica y los mensajes son cortos, un CRC más corto puede ser más adecuado.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 2.9.
+
+Se quiere diseñar un código de bloque más simple que los anteriores y se nos encarga la tarea de determinar si es possible diseñar un código con las siguientes características:
+
+capacidad correctora de un bit, k = 16 i n = 20.
+
+Determinad si es o no posible encontrar este código. En caso afirmativo indicad cómo se encontraría (no se pide que lo encontréis) y en caso de que no se pueda razonad el motivo.
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 2.9.
+
+Para diseñar un código de bloque con capacidad de corrección de un bit, necesitamos utilizar un código que tenga suficientes bits de redundancia para identificar no solo la presencia de un error, sino también su ubicación exacta en el bloque de datos.
+
+La capacidad de un código de corregir errores se basa en la distancia de Hamming del código. La distancia de Hamming de un código corrector de errores es el número mínimo de posiciones en las que dos bloques de código de igual longitud difieren. Para que un código pueda corregir hasta $t$ errores, se requiere una distancia de Hamming de $2t+1$
+
+Un código de bloque con las siguientes características:
+
+- Capacidad correctora de un bit $(t=1)$.
+
+- $k=16$ (longitud de la palabra de datos)
+
+- $n=20$ (longitud total de la palabra del código, incluyendo datos y redundancia)
+
+
+Tiene $n−k=20−16=4$ bits de redundancia.
+
+Para determinar si es posible crear tal código, podemos usar el teorema de la capacidad de canal de Hamming, que establece que, para corregir $t$ errores en un código de bloque, se deben satisfacer la siguiente condición:
+
+$2 \geq k + r + 1$
+
+Donde $r$ es el número de bits de redundancia y $k$ es el número de bits de datos. En nuestro caso, queremos que:
+
+$2^4 \geq 16+4+1$
+
+$16 \geq 21$
+
+Esta condición no se cumple porque 16 no es mayor o igual a 21. Por lo tanto, con 4 bits de redundancia, no podemos satisfacer las condiciones necesarias para tener un código con capacidad correctora de un solo bit para 16 bits de datos.
+
+Para cumplir con el requisito de corrección de un bit con $k=16$, necesitaríamos al menos 5 bits de redundancia, lo que daría un código de longitud $n=k+r=16+5=21$.
+
+Por lo tanto, no es posible diseñar un código con las características exactas dadas ($k=16$, $n=20$, capacidad correctora de un bit) usando los principios estándar de los códigos de corrección de errores de bloque. Se necesitarían más bits de redundancia para proporcionar la capacidad correctora de un bit para un bloque de datos de 16 bits.
+
+[Volver al Índice](#índice)
+
+---
+
+## Parte 3. Codificación de canal.
+
+Típicamente, las secuencias de datos transmitidas por el canal pueden protegerse utilizando un codificador
+de canal. El diagrama de bloques de la siguiente figura podría corresponder a uno de ellos. Responded a las diferentes preguntas:
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 3.1
+
+¿Cuál es la tasa del código?
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 3.1.
+
+Vamos a llamar de derecha a izquierda los retardos de la siguiente manera $( \text{za, zb, zc, zd, ze ,zf})$, a los XOR los vamos a relacionar con sus outpouts $(\text{XORa, XORb})$
+
+Por tanto, para el análisis, consideremos lo siguiente:
+
+El "Input Data" ingresa al sistema y se dirige hacia tres destinos: directamente a los dos XOR (XORa y XORb) y al primer retardo (za).
+
+Cada retardo (za, zb, zc, zd, ze, zf) representa un paso de tiempo y puede considerarse como una etapa en la que se puede manipular un bit de entrada.
+
+Los bits procesados a través de los retardos y combinados en los XOR se utilizan para generar bits de redundancia para la corrección de errores.
+
+Con estos puntos en mente, cada retardo que conecta directamente a un XOR (o a ambos) esencialmente contribuye un bit adicional a la salida. Basado en su descripción, aquí está cómo los bits de entrada y los bits de redundancia fluyen a través del sistema:
+
+- $Input Data → XORa (\text {bit de redundancia})$
+- $Input Data → XORb (\text {bit de redundancia})$
+- $za → XORb (\text {bit de redundancia})$
+- $zb → XORa (\text {bit de redundancia})$
+- $zb → XORb (\text {bit de redundancia})$
+- $zc → XORa (\text {bit de redundancia})$
+- $zc → XORb (\text {bit de redundancia})$
+- $ze → XORa (\text {bit de redundancia})$
+- $zf → XORa (\text {bit de redundancia})$
+- $zf → XORb (\text {bit de redundancia})$
+
+Podemos notar que cada etapa (retardo) contribuye a la redundancia excepto zd que solo pasa a ze. Contando la cantidad de retardos más las contribuciones directas del Input Data a los XOR, tenemos un total de 10 bits de redundancia generados.
+
+Dado que el Input Data se transmite a través de 6 retardos (uno para cada za, zb, zc, zd, ze, zf), eso indica que hay 6 bits de información siendo procesados a través del sistema. Si cada bit de información pasa a través del sistema exactamente una vez, y asumiendo que el Input Data se procesa bit por bit (cada bit de información se transmite en un ciclo de codificación), la tasa del código sería la relación de bits de información a bits totales.
+
+Entonces, con 6 bits de información y 10 bits de redundancia generados, tendríamos 16 bits transmitidos en total (6 de información más 10 de redundancia). La tasa de código sería $\frac{k}{n} = \frac {6}{16} = \frac {3}{8}$.
+
+Por lo tanto, la tasa del código es $\frac {3}{8}$, significando que por cada 3 bits de información, hay 8 bits transmitidos en total, lo que proporciona una fuerte corrección de errores pero a costa de una menor eficiencia en la transmisión de la información pura.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 3.2.
+
+¿Se trata de un código sistemático? Justificad la respuesta.
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 3.2.
+
+Un código sistemático es aquel en el cual la salida incluye una copia no modificada de los bits de entrada (los bits de información), además de los bits de redundancia generados por el proceso de codificación. En un código sistemático, los bits de información son reconocibles en la salida tal como aparecen en la entrada, sin ser alterados.
+
+Basándonos en la descripción proporcionada y el funcionamiento del esquema de codificación:
+
+El "Input Data" contribuye directamente a los XOR (XORa y XORb), y también pasa a través de una serie de retardos.
+Cada retardo (za, zb, zc, zd, ze, zf) eventualmente contribuye a la salida a través de los XOR.
+Los bits de redundancia se generan a partir de la combinación (XOR) de los bits de entrada y los bits retardados.
+Para determinar si el código es sistemático, necesitamos ver si los bits de entrada se transmiten directamente a la salida, además de cualquier redundancia generada. En la descripción proporcionada, el "Input Data" se utiliza directamente en los XORa y XORb. Sin embargo, no se menciona explícitamente si los bits de entrada se pasan también a la salida tal como están, sin modificaciones.
+
+Si los bits de entrada aparecen en la salida sin ser alterados junto con los bits de redundancia, entonces el código es sistemático. Si los bits de entrada son todos modificados o no están presentes en su forma original en la salida, entonces no es sistemático.
+
+Con los datos proporcionados, podemos especular que si los bits de entrada se están utilizando directamente en las operaciones de XOR y también se están retrasando (y presumiblemente pasando a través de la salida después de cada retardo), es probable que el código sea sistemático. Esto significa que cada bit de entrada aparecería en la salida como un bit de información, y los bits adicionales (resultantes de las operaciones de XOR) serían los bits de redundancia.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 3.3.
+
+¿Cuál es el polinomio generador?
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 3.3.
+
+En los esquemas de codificación, el polinomio generador se utiliza para describir cómo se codifican los bits de entrada para formar la secuencia de salida. En el caso de un esquema de codificación convolucional como el descrito en su diagrama, los polinomios generadores suelen estar asociados con cada una de las salidas (en este caso, Output Data A y Output Data B).
+
+Para identificar los polinomios generadores, necesitamos ver cómo se conectan los diferentes retardos (representados por $Z^{−1}$
+ ) y las operaciones XOR a cada una de las salidas. Cada término en el polinomio generador se corresponde con una conexión entre el bit de entrada (o su versión retrasada) y la salida a través de un XOR.
+
+De su descripción, tenemos las siguientes conexiones para cada salida:
+
+Output Data A (XORa):
+
+- Input Data
+- zb
+- zc
+- ze
+- zf
+
+
+Esto nos da un polinomio generador para la Output Data A que puede ser descrito como $g_A(Z)=1+Z^2+Z^3+Z^5+Z^6$ donde $Z^n$ representa un retardo de n unidades de tiempo (ciclos).
+
+Output Data B (XORb):
+
+- Input Data
+- za
+- zb
+- zc
+- zf
+
+De manera similar, el polinomio generador para la Output Data B sería $g_B(Z)=1+Z+Z^2+Z^3+Z^6$.
+
+Por lo tanto, el par de polinomios generadores para el código es $g_A(Z)$ y $g_B(Z)$, que representan cómo cada bit de entrada (o su versión retrasada) afecta la salida correspondiente a través de las operaciones de XOR.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 3.4.
+
+¿Podría definirse el codificador mediante una matriz generadora G? En caso afirmativo, ¿qu´e dimensiones tendría?
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 3.4.
+
+En el contexto de los códigos convolucionales, a diferencia de los códigos de bloque, la matriz generadora no se define de la misma manera debido a la naturaleza secuencial y dependiente del tiempo del proceso de codificación. Los códigos convolucionales, como el esquemático que se describió, son tipificados por polinomios generadores y se representan mejor mediante una estructura de trellis que refleja el proceso de codificación a lo largo del tiempo.
+
+No obstante, para códigos de bloque lineales, es posible definir una matriz generadora $G$ que es estática y mapea una secuencia de bits de entrada en una secuencia de bits codificados de una sola vez, no de manera continua como los códigos convolucionales.
+
+Si intentáramos describir el codificador convolucional con una matriz, esta matriz tendría una naturaleza infinita debido a la retroalimentación y el procesamiento secuencial. La matriz representaría todas las posibles combinaciones de bits de entrada y sus correspondientes bits de salida a lo largo del tiempo. Por lo tanto, en la práctica, no se usa una matriz generadora finita para describir un codificador convolucional.
+
+Sin embargo, se puede hablar de una matriz generadora en términos de una serie de polinomios generadores para cada instante de tiempo, que en teoría podría extenderse indefinidamente a medida que se procesan más bits de entrada. En tal caso, la "matriz" tendría un número infinito de filas, cada una correspondiente a un bit de entrada en un momento de tiempo diferente, y un número de columnas correspondiente al período de restricción del codificador, que se basa en la memoria del mismo.
+
+En resumen, aunque se puede considerar conceptualmente una matriz generadora para un codificador convolucional, en la práctica, se utiliza un conjunto de polinomios generadores y una estructura de trellis para describir y analizar su funcionamiento.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 3.5.
+
+¿Cuál es la distancia libre del código?
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 3.5.
+
+La distancia libre de un código convolucional se define como la mínima distancia de Hamming entre dos secuencias de salida válidas diferentes. Es decir, es la menor cantidad de diferencias bit a bit entre todas las posibles secuencias de salida que pueden ser generadas por el codificador a partir de diferentes secuencias de entrada. La distancia libre es una medida importante porque determina la capacidad del código para detectar y corregir errores: cuanto mayor es la distancia libre, mayor es la robustez del código ante errores.
+
+Para determinar la distancia libre en un codificador convolucional, generalmente se busca la secuencia de bits de entrada no nula de menor peso (es decir, con la menor cantidad de unos) que produzca la secuencia de salida con el menor número de unos, porque los unos en la secuencia de salida representan las diferencias en la distancia de Hamming.
+
+En el caso del diagrama proporcionado y la descripción de las conexiones, para calcular la distancia libre, necesitamos identificar la secuencia de entrada de menor peso que producirá una salida con los bits de diferencia mínima (los unos en la secuencia de salida). Esto normalmente requeriría un análisis de la estructura de trellis del código, que es una representación gráfica de cómo los estados del codificador evolucionan con cada bit de entrada.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 3.6.
+
+¿Cuál es la distancia libre del código?
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 3.6.
+
+En un codificador convolucional, el número de estados del diagrama de estados está determinado por la memoria del codificador. La memoria se define como el número de $Z^{−1}$ bloques que un bit de entrada particular atraviesa antes de que salga completamente del sistema de codificación. Cada $Z^{−1}$ representa un retardo de un tiempo de bit, y la cantidad de estados del codificador es $2^m$, donde $m$ es la memoria del codificador.
+
+En el esquema proporcionado, hay 6 bloques $Z^{−1}$, lo que significa que la memoria del codificador es 6. Por lo tanto, el número de estados del diagrama de estados es $2^m = 2^6 = 64$ estados. Esto significa que hay 64 posibles condiciones únicas o configuraciones de memoria en las que el codificador puede encontrarse en un momento dado, cada una correspondiendo a una combinación particular de los bits en las posiciones de memoria.
+
+[Volver al Índice](#índice)
+
+---
+
+## Pregunta 3.6.
+
+Teniendo en cuenta el diagrama de estados y el algoritmo de descodificación de Viterbi, responded a los siguientes apartados:
+
+1. Partiendo del estado {001101} indicad a qu´e estado se llegará y cuáles serían los bits de salida si el bit de entrada es un '0' y si es un '1'.
+
+2. ¿Desde qu´e estados puede llegarse al estado {001101}? Indicad en cada caso cuál tendría que ser el bit de entrada y cuáles serien los bits de salida.
+
+3. Siguiendo un esquema de descodificación dura (hard), en cada paso del algoritmo de descodificación, ¿cuántas comparaciones y cuántas sumas habrá que hacer? Nota: Considerad que el Trellis está completamente abierto y por lo tanto ya se han logrado todos los posibles estados.
+
+[Volver al Índice](#índice)
+
+---
+
+## Respuesta a la pregunta 3.6.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
